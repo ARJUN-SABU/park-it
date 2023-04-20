@@ -1,5 +1,7 @@
 //packages
 import { Routes, Route } from "react-router-dom";
+
+//components
 import HomePage from "./components/HomePage";
 
 //styles
