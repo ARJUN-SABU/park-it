@@ -39,7 +39,7 @@ function HomePage() {
       //get the bookings
       let url1 = `http://localhost:8000/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
       let url2 = `https://park-it-omega.vercel.app/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
-      fetch(url1)
+      fetch(url2)
         .then((res) => res.json())
         .then((data) => console.log(data))
         .catch((err) => console.log(err));
