@@ -61,8 +61,8 @@ app.get("/time-slots", (req, res) => {
       docs.forEach((doc) => {
         let newDoc = {
           slot: doc.slot,
-          arrival: `${doc.arrival.getUTCHours()}:${doc.arrival.getUTCMinutes()}`,
-          departure: `${doc.departure.getUTCHours()}:${doc.departure.getUTCMinutes()}`,
+          arrival: `${doc.arrival.getHours()}:${doc.arrival.getMinutes()}`,
+          departure: `${doc.departure.getHours()}:${doc.departure.getMinutes()}`,
           booked: false,
         };
         if (
