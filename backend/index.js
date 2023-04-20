@@ -78,9 +78,15 @@ app.get("/time-slots", (req, res) => {
           booked: false,
         };
 
+        // if (
+        //   arrivalTime.getTime() < doc.departure.getTime() &&
+        //   doc.arrival.getTime() < departureTime.getTime()
+        // ) {
+        //   newDoc.booked = true;
+        // }
         if (
-          arrivalTime.getTime() < doc.departure.getTime() &&
-          doc.arrival.getTime() < departureTime.getTime()
+          arrivalTime.getTime() < new Date(doc.departure).getTime() &&
+          new Date(doc.arrival).getTime() < departureTime.getTime()
         ) {
           newDoc.booked = true;
         }
