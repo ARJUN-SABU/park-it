@@ -1,5 +1,6 @@
 const express = require("express");
 const { connectToDb, getDb } = require("./db");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -14,6 +15,12 @@ connectToDb((err) => {
     db = getDb();
   }
 });
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 //routes
 app.get("/time-slots", (req, res) => {
