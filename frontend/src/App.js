@@ -1,17 +1,16 @@
-import "./App.css";
+//packages
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./components/HomePage";
+
+//styles
+import "./styles/App.css";
 
 function App() {
-  function getTimeSlots() {
-    fetch("https://park-it-omega.vercel.app/time-slots")
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-  }
-
   return (
-    <div className="App">
-      <h1>Hello</h1>
-      <button onClick={getTimeSlots}>Click Me</button>
+    <div className="app">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
     </div>
   );
 }
