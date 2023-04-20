@@ -2,9 +2,10 @@ import "./App.css";
 
 function App() {
   function getTimeSlots() {
-    fetch("https://park-it-omega.vercel.app/time-slots").then((result) =>
-      console.log(result)
-    );
+    fetch("https://park-it-omega.vercel.app/time-slots")
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
   }
 
   return (

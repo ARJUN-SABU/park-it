@@ -36,9 +36,24 @@ app.get("/time-slots", (req, res) => {
   let blockB = [];
   let blockC = [];
   for (let i = 0; i < 8; i++) {
-    blockA.push({});
-    blockB.push({});
-    blockC.push({});
+    blockA.push({
+      slot: "",
+      arrival: "",
+      departure: "",
+      booked: false,
+    });
+    blockB.push({
+      slot: "",
+      arrival: "",
+      departure: "",
+      booked: false,
+    });
+    blockC.push({
+      slot: "",
+      arrival: "",
+      departure: "",
+      booked: false,
+    });
   }
 
   let date = "Tue Apr 18 2023";
