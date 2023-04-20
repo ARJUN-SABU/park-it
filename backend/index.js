@@ -30,24 +30,9 @@ app.get("/time-slots", (req, res) => {
   let blockB = [];
   let blockC = [];
   for (let i = 0; i < 8; i++) {
-    blockA.push({
-      slot: "",
-      arrival: "",
-      departure: "",
-      booked: false,
-    });
-    blockB.push({
-      slot: "",
-      arrival: "",
-      departure: "",
-      booked: false,
-    });
-    blockC.push({
-      slot: "",
-      arrival: "",
-      departure: "",
-      booked: false,
-    });
+    blockA.push(null);
+    blockB.push(null);
+    blockC.push(null);
   }
 
   let date = req.query.date;
@@ -59,18 +44,16 @@ app.get("/time-slots", (req, res) => {
     .toArray()
     .then((docs) => {
       docs.forEach((doc) => {
-        let newDoc = {
-          slot: doc.slot,
-          arrival: doc.arrival,
-          departure: doc.departure,
-          booked: false,
-        };
+        let newDoc = null;
 
         if (
           arrivalTime.getTime() < new Date(doc.departure).getTime() &&
           new Date(doc.arrival).getTime() < departureTime.getTime()
         ) {
-          newDoc.booked = true;
+          newDoc = {
+            arrival: doc.arrival,
+            departure: doc.departure,
+          };
         }
 
         if (doc.block == "A") blockA[Number(doc.slot)] = newDoc;
