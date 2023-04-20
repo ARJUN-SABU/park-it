@@ -1,0 +1,9 @@
+.parkingBlock {
+  margin: 0 40px;
+}
+.parkingBlockText {
+  text-align: center;
+}
+.parkingBlockRow {
+  display: flex;
+}

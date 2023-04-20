@@ -1,0 +1,24 @@
+.parkingSlot {
+  position: relative;
+  border: 1px dashed black;
+  height: 110px;
+  width: 150px;
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parkingSlot_slotNumber {
+  position: absolute;
+  bottom: 0;
+  padding: 7px;
+  font-size: 13px;
+}
+
+.parkingSlotLeft .parkingSlot_slotNumber {
+  right: 0;
+}
+.parkingSlotRight .parkingSlot_slotNumber {
+  left: 0;
+}

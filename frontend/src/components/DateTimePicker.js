@@ -1,7 +1,11 @@
+//styles
+import "../styles/DateTimePicker.css";
+
 function DateTimePicker({ date, setDate, setArrivalTime, setDepartureTime }) {
   return (
     <div className="dateTimePicker">
       <div className="datePicker">
+        <p>Select Date</p>
         <input
           type="date"
           min={new Date().toISOString().split("T")[0]}
@@ -10,15 +14,21 @@ function DateTimePicker({ date, setDate, setArrivalTime, setDepartureTime }) {
           }
         ></input>
       </div>
-      <div className="timePicker">
-        <input
-          type="time"
-          onChange={(event) => setArrivalTime(event.target.value)}
-        />
-        <input
-          type="time"
-          onChange={(event) => setDepartureTime(event.target.value)}
-        />
+      <div className="timePickerContainer">
+        <div className="timePicker">
+          <p>Arrival</p>
+          <input
+            type="time"
+            onChange={(event) => setArrivalTime(event.target.value)}
+          />
+        </div>
+        <div className="timePicker">
+          <p>Departure</p>
+          <input
+            type="time"
+            onChange={(event) => setDepartureTime(event.target.value)}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 //packages
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 //components
 import Navbar from "./Navbar";
@@ -10,6 +11,8 @@ import ParkingArea from "./ParkingArea";
 import ".././styles/HomePage.css";
 
 function HomePage() {
+  let parkingState = useSelector((state) => state);
+
   //states
   const [date, setDate] = useState(new Date().toDateString());
   const [arrivalTime, setArrivalTime] = useState(
@@ -18,6 +21,15 @@ function HomePage() {
   const [departureTime, setDepartureTime] = useState(
     `${new Date().getHours()}:${new Date().getMinutes()}`
   );
+  const [slotBookings, setSlotBookings] = useState({
+    blockA: [null, null, null, null, null, null, null, null],
+    blockB: [null, null, null, null, null, null, null, null],
+    blockC: [null, null, null, null, null, null, null, null],
+  });
+
+  useEffect(() => {
+    console.log(parkingState);
+  }, [parkingState]);
 
   //utility functions
   function getParkingSlotBookings() {
@@ -41,16 +53,19 @@ function HomePage() {
       let url2 = `https://park-it-omega.vercel.app/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
       fetch(url2)
         .then((res) => res.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+          console.log(data);
+          setSlotBookings(data);
+        })
         .catch((err) => console.log(err));
     }
   }
 
   return (
-    <div className="App">
+    <div className="homePage">
       <Navbar />
 
-      <div>
+      <div className="dateTimeSearch">
         <DateTimePicker
           date={date}
           setDate={setDate}
@@ -60,7 +75,7 @@ function HomePage() {
         <button onClick={getParkingSlotBookings}>Go</button>
       </div>
 
-      <ParkingArea />
+      <ParkingArea slotBookings={slotBookings} />
     </div>
   );
 }

@@ -1,7 +1,15 @@
-function ParkingArea() {
+//components
+import ParkingBlock from "./ParkingBlock";
+
+//styles
+import "../styles/ParkingArea.css";
+
+function ParkingArea({ slotBookings }) {
   return (
-    <div>
-      <h1>I am the ParkingArea</h1>
+    <div className="parkingArea">
+      <ParkingBlock block={"A"} bookings={slotBookings.blockA} />
+      <ParkingBlock block={"B"} bookings={slotBookings.blockB} />
+      <ParkingBlock block={"C"} bookings={slotBookings.blockC} />
     </div>
   );
 }
