@@ -59,15 +59,28 @@ app.get("/time-slots", (req, res) => {
     .toArray()
     .then((docs) => {
       docs.forEach((doc) => {
+        // let newDoc = {
+        //   slot: doc.slot,
+        //   arrival: `${doc.arrival.getHours()}:${doc.arrival.getMinutes()}`,
+        //   departure: `${doc.departure.getHours()}:${doc.departure.getMinutes()}`,
+        //   booked: false,
+        // };
+        // if (
+        //   arrivalTime.getTime() < new Date(doc.departure).getTime() &&
+        //   new Date(doc.arrival).getTime() < departureTime.getTime()
+        // ) {
+        //   newDoc.booked = true;
+        // }
         let newDoc = {
           slot: doc.slot,
-          arrival: `${doc.arrival.getHours()}:${doc.arrival.getMinutes()}`,
-          departure: `${doc.departure.getHours()}:${doc.departure.getMinutes()}`,
+          arrival: doc.arrival,
+          departure: doc.departure,
           booked: false,
         };
+
         if (
-          arrivalTime.getTime() < new Date(doc.departure).getTime() &&
-          new Date(doc.arrival).getTime() < departureTime.getTime()
+          arrivalTime.getTime() < doc.departure.getTime() &&
+          doc.arrival.getTime() < departureTime.getTime()
         ) {
           newDoc.booked = true;
         }
