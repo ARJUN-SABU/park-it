@@ -2,14 +2,14 @@ const express = require("express");
 const { connectToDb, getDb } = require("./db");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 8000;
 
 //db connection
 let db;
 connectToDb((err) => {
   if (!err) {
     app.listen(PORT, () => {
-      console.log("App is listening at port 3000");
+      console.log("App is listening at port 8000");
     });
     db = getDb();
   }
