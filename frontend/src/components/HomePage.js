@@ -1,17 +1,20 @@
 //packages
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { actions } from "../app/parkingSlice";
 
 //components
 import Navbar from "./Navbar";
 import DateTimePicker from "./DateTimePicker";
 import ParkingArea from "./ParkingArea";
+import ParkingBooking from "./ParkingBooking";
 
 //styles
 import ".././styles/HomePage.css";
 
 function HomePage() {
-  let parkingState = useSelector((state) => state);
+  const parkingState = useSelector((state) => state.parking);
+  const dispatch = useDispatch();
 
   //states
   const [date, setDate] = useState(new Date().toDateString());
@@ -58,6 +61,17 @@ function HomePage() {
           setSlotBookings(data);
         })
         .catch((err) => console.log(err));
+
+      dispatch(
+        actions.setParkingDetails({
+          block: parkingState.block,
+          slot: parkingState.slot,
+          showParkingBooking: false,
+          date: date,
+          arrival: arrivalTime,
+          departure: departureTime,
+        })
+      );
     }
   }
 
@@ -76,6 +90,14 @@ function HomePage() {
       </div>
 
       <ParkingArea slotBookings={slotBookings} />
+
+      {parkingState.showParkingBooking ? (
+        <div className="parkingBookingOverlay">
+          <ParkingBooking />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

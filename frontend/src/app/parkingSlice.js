@@ -2,6 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   block: "B",
   slot: 7,
+  showParkingBooking: false,
+  date: "",
+  arrival: "",
+  departure: "",
 };
 
 const parkingSlice = createSlice({
@@ -11,6 +15,10 @@ const parkingSlice = createSlice({
     setParkingDetails: (state, action) => {
       state.block = action.payload.block;
       state.slot = action.payload.slot;
+      state.showParkingBooking = action.payload.showParkingBooking;
+      state.date = action.payload.date;
+      state.arrival = action.payload.arrival;
+      state.departure = action.payload.departure;
     },
   },
 });
