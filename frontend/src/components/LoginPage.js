@@ -1,20 +1,109 @@
+//packages
+import { useRef, useEffect } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { actions as userActions } from "../app/userSlice";
+import {} from "firebase/auth";
+
 //styles
 import "../styles/LoginPage.css";
 
 function LoginPage() {
+  const signUpEmail = useRef();
+  const signUpPassword = useRef();
+  const signInEmail = useRef();
+  const signInPassword = useRef();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+      } else {
+        console.log("user is logged out");
+      }
+    });
+  }, []);
+
+  function signUpUser() {
+    if (signUpEmail.current.value == "") {
+      alert("Email cannot be empty!");
+    } else if (signUpPassword.current.value == "") {
+      alert("Password cannot be empty!");
+    } else {
+      createUserWithEmailAndPassword(
+        auth,
+        signUpEmail.current.value,
+        signUpPassword.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          //   console.log(user);
+          navigate("/");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          //   console.log(error);
+          // ..
+        });
+    }
+  }
+
+  function signInUser() {
+    if (signInEmail.current.value == "") {
+      alert("Email cannot be empty!");
+    } else if (signInPassword.current.value == "") {
+      alert("Password cannot be empty!");
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        signInEmail.current.value,
+        signInPassword.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          //   console.log(user);
+          navigate("/");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    }
+  }
+
   return (
     <div className="loginPage">
       <div className="loginPage__inputBox">
         <p>Login to your account.</p>
-        <input type="text" placeholder="email"></input>
-        <input type="password" placeholder="password"></input>
-        <button>Sign In</button>
+        <input type="text" placeholder="email" ref={signInEmail}></input>
+        <input
+          type="password"
+          placeholder="password"
+          ref={signInPassword}
+        ></input>
+        <button onClick={signInUser}>Sign In</button>
       </div>
       <div className="loginPage__inputBox">
         <p>Don't have an account?</p>
-        <input type="text" placeholder="email"></input>
-        <input type="password" placeholder="password"></input>
-        <button>Sign Up</button>
+        <input type="text" placeholder="email" ref={signUpEmail}></input>
+        <input
+          type="password"
+          placeholder="password"
+          ref={signUpPassword}
+        ></input>
+        <button onClick={signUpUser}>Sign Up</button>
       </div>
     </div>
   );

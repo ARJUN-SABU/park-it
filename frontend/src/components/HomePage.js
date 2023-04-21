@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../app/parkingSlice";
+import { actions as userActions } from "../app/userSlice";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 
 //components
 import Navbar from "./Navbar";
@@ -15,6 +18,7 @@ import ".././styles/HomePage.css";
 
 function HomePage() {
   const parkingState = useSelector((state) => state.parking);
+  const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   //states
@@ -34,6 +38,23 @@ function HomePage() {
   useEffect(() => {
     console.log(parkingState);
   }, [parkingState]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        // console.log("uid", uid);
+        // console.log("New User ", user.email);
+        dispatch(userActions.setUser(user.email));
+      } else {
+        console.log("user is logged out");
+      }
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(userState);
+  // }, [userState]);
 
   //utility functions
   function getParkingSlotBookings() {
