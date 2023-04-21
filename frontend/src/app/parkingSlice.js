@@ -3,7 +3,7 @@ const initialState = {
   block: "B",
   slot: 7,
   showParkingBooking: false,
-  showBookedSlotDetails: false,
+  bookedSlotDetails: null,
   date: "",
   arrival: "",
   departure: "",
@@ -17,6 +17,7 @@ const parkingSlice = createSlice({
       state.block = action.payload.block;
       state.slot = action.payload.slot;
       state.showParkingBooking = action.payload.showParkingBooking;
+      state.bookedSlotDetails = action.payload.bookedSlotDetails;
       state.date = action.payload.date;
       state.arrival = action.payload.arrival;
       state.departure = action.payload.departure;

@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import DateTimePicker from "./DateTimePicker";
 import ParkingArea from "./ParkingArea";
 import ParkingBooking from "./ParkingBooking";
+import BookedSlotDetailsCard from "./BookedSlotDetailsCard";
 
 //styles
 import ".././styles/HomePage.css";
@@ -54,6 +55,7 @@ function HomePage() {
       //get the bookings
       let url1 = `http://localhost:8000/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
       let url2 = `https://park-it-omega.vercel.app/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
+      // console.log(url2);
       fetch(url2)
         .then((res) => res.json())
         .then((data) => {
@@ -93,7 +95,15 @@ function HomePage() {
 
       {parkingState.showParkingBooking ? (
         <div className="parkingBookingOverlay">
-          <ParkingBooking />
+          <ParkingBooking setSlotBookings={setSlotBookings} />
+        </div>
+      ) : (
+        ""
+      )}
+
+      {parkingState.bookedSlotDetails ? (
+        <div className="parkingBookingOverlay">
+          <BookedSlotDetailsCard />
         </div>
       ) : (
         ""

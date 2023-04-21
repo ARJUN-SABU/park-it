@@ -1,0 +1,30 @@
+.bookedSlotDetailsCard {
+  background-color: #f8f5ff;
+  position: relative;
+  /* height: 500px; */
+  width: 70%;
+  max-width: 500px;
+  min-width: 300px;
+  padding: 20px;
+}
+
+.bookedSlotDetailsCard--close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: black;
+  background-color: white;
+  border-radius: 100px;
+  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.bookedSlotDetailsCard__SlotNumber {
+  font-size: 20px;
+  margin-bottom: 10px;
+}

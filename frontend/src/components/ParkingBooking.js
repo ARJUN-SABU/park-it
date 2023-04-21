@@ -6,7 +6,7 @@ import { useRef } from "react";
 //styles
 import "../styles/ParkingBooking.css";
 
-function ParkingBooking() {
+function ParkingBooking({ setSlotBookings }) {
   const parkingState = useSelector((state) => state.parking);
   const dispatch = useDispatch();
   const vehicleType = useRef();
@@ -36,8 +36,9 @@ function ParkingBooking() {
       };
 
       console.log(data);
-      let url1 = "http://localhost:8000/add-booking/";
-      fetch(url1, {
+      // let url1 = "http://localhost:8000/add-booking/";
+      let url2 = "https://park-it-omega.vercel.app/add-booking/";
+      fetch(url2, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -45,7 +46,29 @@ function ParkingBooking() {
         },
       })
         .then((res) => res.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+          // let url1 = `http://localhost:8000/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
+          let url = `https://park-it-omega.vercel.app/time-slots?date=${parkingState.date}&arrivalTime=${parkingState.arrival}&departureTime=${parkingState.departure}`;
+          console.log(url);
+          fetch(url)
+            .then((res) => res.json())
+            .then((data) => {
+              console.log("This is the data", data);
+              setSlotBookings(data);
+              dispatch(
+                actions.setParkingDetails({
+                  block: "",
+                  slot: "",
+                  showParkingBooking: false,
+                  bookedSlotDetails: null,
+                  date: "",
+                  arrival: "",
+                  departure: "",
+                })
+              );
+            })
+            .catch((err) => console.log(err));
+        })
         .catch((err) => console.log(err));
     }
   }
@@ -60,6 +83,7 @@ function ParkingBooking() {
               block: parkingState.block,
               slot: parkingState.slot,
               showParkingBooking: false,
+              bookedSlotDetails: null,
               date: parkingState.date,
               arrival: parkingState.arrival,
               departure: parkingState.departure,

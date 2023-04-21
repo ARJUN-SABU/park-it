@@ -9,12 +9,26 @@ function ParkingSlot({ bookingStatus, slotPosition, block, slot }) {
   const dispatch = useDispatch();
   const parkingState = useSelector((state) => state.parking);
   function setBlockAndSlot() {
+    console.log(bookingStatus);
     if (!bookingStatus) {
       dispatch(
         actions.setParkingDetails({
           block,
           slot,
           showParkingBooking: true,
+          bookedSlotDetails: null,
+          date: parkingState.date,
+          arrival: parkingState.arrival,
+          departure: parkingState.departure,
+        })
+      );
+    } else {
+      dispatch(
+        actions.setParkingDetails({
+          block: block,
+          slot: slot,
+          showParkingBooking: false,
+          bookedSlotDetails: bookingStatus,
           date: parkingState.date,
           arrival: parkingState.arrival,
           departure: parkingState.departure,
