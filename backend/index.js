@@ -16,11 +16,14 @@ connectToDb((err) => {
   }
 });
 
+//middlewares
 app.use(
   cors({
     origin: "*",
   })
 );
+app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
 
 //routes
 app.get("/time-slots", (req, res) => {
@@ -70,17 +73,24 @@ app.get("/time-slots", (req, res) => {
 });
 
 app.post("/add-booking", (req, res) => {
+  // db.collection("parking")
+  //   .insertOne({
+  //     vehicleType: "Sedan",
+  //     vehicleNumber: "Ciaz",
+  //     expireAt: new Date("April 22, 2023 19:30:00"), //same as departure time
+  //     date: new Date("April 22, 2023").toDateString(),
+  //     arrival: new Date("April 22, 2023 18:00:00"),
+  //     departure: new Date("April 22, 2023 19:30:00"),
+  //     block: "B",
+  //     slot: 7,
+  //   })
+  //   .then((result) => res.status(200).json(result))
+  //   .catch((err) => console.log(err));
+  console.log(req.body);
+  req.body.expireAt = new Date(req.body.expireAt);
+  console.log(req.body);
   db.collection("parking")
-    .insertOne({
-      vehicleType: "Sedan",
-      vehicleNumber: "Ciaz",
-      expireAt: new Date("April 22, 2023 19:30:00"), //same as departure time
-      date: new Date("April 22, 2023").toDateString(),
-      arrival: new Date("April 22, 2023 18:00:00"),
-      departure: new Date("April 22, 2023 19:30:00"),
-      block: "B",
-      slot: 7,
-    })
+    .insertOne(req.body)
     .then((result) => res.status(200).json(result))
     .catch((err) => console.log(err));
 });

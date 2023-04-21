@@ -13,16 +13,41 @@ function ParkingBooking() {
   const vehicleNumber = useRef();
 
   function bookParking() {
-    console.log({
-      vehicleType: vehicleType.current.value,
-      vehicleNumber: vehicleNumber.current.value,
-      date: parkingState.arrival,
-      expireAt: parkingState.departure, //same as departure time
-      arrival: parkingState.arrival,
-      departure: parkingState.departure,
-      block: parkingState.block,
-      slot: parkingState.slot,
-    });
+    if (vehicleType.current.value == "") {
+      alert("vehicle type cannot be empty");
+    } else if (vehicleNumber.current.value == "") {
+      alert("vehicle number cannot be empty");
+    } else if (parkingState.date == "") {
+      alert("Please choose a parking date!");
+    } else if (parkingState.arrival == "") {
+      alert("Please select the arrival time!");
+    } else if (parkingState.departure == "") {
+      alert("Please select the departure time");
+    } else {
+      let data = {
+        vehicleType: vehicleType.current.value,
+        vehicleNumber: vehicleNumber.current.value,
+        block: parkingState.block,
+        slot: parkingState.slot,
+        date: parkingState.date,
+        expireAt: new Date(`${parkingState.date} ${parkingState.departure}`), //same as departure time
+        arrival: `${parkingState.date} ${parkingState.arrival}`,
+        departure: `${parkingState.date} ${parkingState.departure}`,
+      };
+
+      console.log(data);
+      let url1 = "http://localhost:8000/add-booking/";
+      fetch(url1, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
   }
 
   return (
