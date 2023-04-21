@@ -28,3 +28,9 @@
   font-size: 20px;
   margin-bottom: 10px;
 }
+
+@media (max-width: 376px) {
+  .bookedSlotDetailsCard {
+    transform: scale(0.7);
+  }
+}
