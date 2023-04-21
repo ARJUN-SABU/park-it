@@ -5,7 +5,7 @@ function DateTimePicker({ date, setDate, setArrivalTime, setDepartureTime }) {
   return (
     <div className="dateTimePicker">
       <div className="datePicker">
-        <p>Select Date</p>
+        <p>Date</p>
         <input
           type="date"
           min={new Date().toISOString().split("T")[0]}

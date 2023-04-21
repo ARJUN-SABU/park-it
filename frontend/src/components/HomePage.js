@@ -86,7 +86,7 @@ function HomePage() {
           setArrivalTime={setArrivalTime}
           setDepartureTime={setDepartureTime}
         />
-        <button onClick={getParkingSlotBookings}>Go</button>
+        <button onClick={getParkingSlotBookings}>Find Parking</button>
       </div>
 
       <ParkingArea slotBookings={slotBookings} />

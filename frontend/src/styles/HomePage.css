@@ -4,24 +4,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
   /* background-color: aqua; */
 }
 
 .dateTimeSearch {
-  margin: 40px 0 0;
+  margin: 0px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .dateTimeSearch button {
-  padding: 6px 20px;
+  padding: 10px 20px;
   margin: 10px;
+  width: 100%;
   cursor: pointer;
+  border: 1px solid black;
+  outline: none;
+  background-color: #ccb7ff;
 }
 
 .parkingBookingOverlay {
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
+
   background-color: rgba(0, 0, 0, 0.5);
   height: 100%;
   width: 100vw;

@@ -3,6 +3,7 @@ const initialState = {
   block: "B",
   slot: 7,
   showParkingBooking: false,
+  showBookedSlotDetails: false,
   date: "",
   arrival: "",
   departure: "",

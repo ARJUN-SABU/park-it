@@ -65,26 +65,37 @@ function ParkingBooking() {
               departure: parkingState.departure,
             })
           );
-          document.querySelector("body").style.overflowY = "auto";
+          document.querySelector("body").style.overflowY = "scroll";
         }}
       >
         X
       </p>
       <div className="parkingBookingContainer">
         <p>
-          Slot: {parkingState.block}
-          {parkingState.slot}
+          Slot:{" "}
+          <b>
+            {parkingState.block}
+            {parkingState.slot}
+          </b>
         </p>
-        <p>Date: {parkingState.date}</p>
-        <p>Arrival: {parkingState.arrival}</p>
-        <p>Departure: {parkingState.departure}</p>
+        <p>
+          Date: <b>{parkingState.date}</b>
+        </p>
+        <p>
+          Arrival: <b>{parkingState.arrival}</b>
+        </p>
+        <p>
+          Departure: <b>{parkingState.departure}</b>
+        </p>
         <input type="text" placeholder="Vehicle Type" ref={vehicleType}></input>
         <input
           type="text"
           placeholder="Vehicle Number"
           ref={vehicleNumber}
         ></input>
-        <button onClick={bookParking}>Book</button>
+        <button className="parkingBooking__bookButton" onClick={bookParking}>
+          Book
+        </button>
       </div>
     </div>
   );

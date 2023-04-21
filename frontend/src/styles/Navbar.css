@@ -1,0 +1,64 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* background-color: red; */
+}
+
+.navbar__logo {
+  margin: 40px 60px 20px 80px;
+}
+
+.navbar__authcontainer {
+  margin: 40px 100px 20px 60px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.navbar__authSignIn {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid black;
+  font-size: 14px;
+  background-color: white;
+}
+
+.navbar__authUserName {
+  padding: 10px 0px 6px;
+  cursor: pointer;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+}
+.navbar__authUserName:hover {
+  border-bottom: 1px solid black;
+}
+
+.navbar__authUserName .icon {
+  display: flex;
+  align-items: center;
+  margin-left: 9px;
+}
+
+.navbar__authOptions {
+  position: absolute;
+  border: 1px solid black;
+  top: 45px;
+  width: max-content;
+  background-color: white;
+}
+.navbar__authOptions p {
+  padding: 10px 20px;
+}
+
+.navbar__authOptions p:hover {
+  cursor: pointer;
+  background-color: rgb(240, 240, 240);
+}
+
+.navbar--hide {
+  display: none;
+}

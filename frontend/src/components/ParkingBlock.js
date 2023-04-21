@@ -7,7 +7,7 @@ import "../styles/ParkingBlock.css";
 function ParkingBlock({ block, bookings }) {
   return (
     <div className="parkingBlock">
-      <div className="parkingBlockText">
+      <div className="parkingBlockName">
         <p>{block} Block</p>
       </div>
       <div className="parkingBlockText">

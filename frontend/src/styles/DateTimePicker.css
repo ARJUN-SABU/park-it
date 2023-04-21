@@ -7,14 +7,31 @@
 .timePickerContainer {
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 0 0 20px;
 }
 
-.datePicker {
-  padding: 0 10px;
+.datePicker p {
+  padding: 10px 10px;
   text-align: center;
+}
+.datePicker input {
+  outline: none;
+  padding: 11px 20px;
+  border: 1px solid #4e4d4d;
+  /* border-radius: 3px; */
+  width: 250px;
+  cursor: pointer;
 }
 
 .timePicker p {
+  padding: 10px 10px;
   text-align: center;
+}
+
+.timePicker input {
+  outline: none;
+  padding: 10px 20px;
+  border: 1px solid #4e4d4d;
+  width: 150px;
+  cursor: pointer;
 }

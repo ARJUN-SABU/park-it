@@ -1,17 +1,27 @@
 .parkingSlot {
   position: relative;
-  border: 1px dashed black;
-  height: 110px;
-  width: 150px;
-  margin: 0 20px;
+  border-bottom: 1px dashed black;
+  height: 90px;
+  width: 130px;
+  /* margin: 0 20px; */
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+}
+.parkingTopRow {
+  border-top: 1px dashed black;
+}
+.parkingSlotLeft {
+  margin-right: 35px;
+}
+.parkingSlotRight {
+  margin-left: 35px;
 }
 
 .parkingSlot_slotNumber {
   position: absolute;
-  bottom: 0;
+  bottom: 2px;
   padding: 7px;
   font-size: 13px;
 }
@@ -21,4 +31,14 @@
 }
 .parkingSlotRight .parkingSlot_slotNumber {
   left: 0;
+}
+
+.parkingSlot--booked .parkingSlot__status {
+  padding: 27px 30px;
+  background-color: #ffb5b5;
+}
+
+.parkingSlot--available .parkingSlot__status {
+  background-color: #d3ffd3;
+  padding: 27px;
 }
