@@ -1,3 +1,6 @@
+//packages
+import { Link } from "react-router-dom";
+
 //styles
 import "../styles/Navbar.css";
 
@@ -15,7 +18,9 @@ function Navbar() {
     <div className="navbar">
       <h1 className="navbar__logo">Park.it</h1>
       <div className="navbar__authcontainer">
-        <button className="navbar__authSignIn">Sign In</button>
+        <Link to="/login">
+          <button className="navbar__authSignIn">Sign In</button>
+        </Link>
         {/* <p className="navbar__authUserName" onClick={toggleAuthOptions}>
           Hello, username{" "}
           <span className="icon">
