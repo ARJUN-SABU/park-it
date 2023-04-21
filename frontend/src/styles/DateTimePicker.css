@@ -3,10 +3,13 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  /* margin: 0 10px; */
 }
 .timePickerContainer {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   padding: 0 0 0 20px;
 }
 
@@ -34,4 +37,28 @@
   border: 1px solid #4e4d4d;
   width: 150px;
   cursor: pointer;
+}
+
+@media (max-width: 479px) {
+  .datePicker input {
+    width: 230px;
+  }
+
+  .timePicker input {
+    width: 230px;
+  }
+
+  .timePickerContainer {
+    padding: 0;
+  }
+}
+
+@media (max-width: 300px) {
+  .datePicker input {
+    width: 200px;
+  }
+
+  .timePicker input {
+    width: 200px;
+  }
 }

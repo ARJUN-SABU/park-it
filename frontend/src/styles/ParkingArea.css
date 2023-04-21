@@ -1,5 +1,5 @@
 .parkingArea {
-  padding: 20px 0;
+  padding: 20px 0px;
   display: flex;
   /* flex-wrap: wrap; */
   justify-content: center;
@@ -10,7 +10,7 @@
   /* background-color: red; */
 }
 
-@media (max-width: 880px) {
+@media (max-width: 1116px) {
   .parkingArea {
     justify-content: left;
   }
