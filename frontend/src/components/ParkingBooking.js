@@ -71,6 +71,7 @@ function ParkingBooking({ setSlotBookings }) {
         })
         .catch((err) => console.log(err));
     }
+    document.querySelector("body").style.overflowY = "scroll";
   }
 
   return (
