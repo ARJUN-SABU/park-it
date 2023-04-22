@@ -31,7 +31,8 @@
 .parkingBookingOverlay {
   /* position: absolute; */
   position: fixed;
-
+  top: 0;
+  z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
   height: 100%;
   width: 100vw;
