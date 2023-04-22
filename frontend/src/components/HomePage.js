@@ -100,7 +100,7 @@ function HomePage() {
 
   return (
     <div className="homePage">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="dateTimeSearch">
         <DateTimePicker

@@ -42,7 +42,9 @@ function Navbar() {
 
   return (
     <div className="navbar">
-      <h1 className="navbar__logo">Park.it</h1>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <h1 className="navbar__logo">Park.it</h1>
+      </Link>
       <div className="navbar__authcontainer">
         {userStatus ? (
           <p className="navbar__authUserName" onClick={toggleAuthOptions}>
