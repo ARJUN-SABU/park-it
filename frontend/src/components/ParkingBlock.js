@@ -6,7 +6,11 @@ import "../styles/ParkingBlock.css";
 
 function ParkingBlock({ block, bookings }) {
   return (
-    <div className="parkingBlock">
+    <div
+      className={`parkingBlock ${block == "C" ? "righMostParkingBlock" : ""} ${
+        block == "A" ? "leftMostParkingBlock" : ""
+      }`}
+    >
       <div className="parkingBlockName">
         <p>{block} Block</p>
       </div>
