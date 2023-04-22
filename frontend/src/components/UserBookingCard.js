@@ -4,7 +4,7 @@ import "../styles/UserBookingCard.css";
 function UserBookingCard(props) {
   function removeBooking() {
     console.log(props.id);
-    fetch(`http://localhost:8000/remove-booking/${props.id}`, {
+    fetch(`https://park-it-omega.vercel.app/remove-booking/${props.id}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",
