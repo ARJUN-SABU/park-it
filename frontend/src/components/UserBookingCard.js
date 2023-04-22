@@ -2,6 +2,28 @@
 import "../styles/UserBookingCard.css";
 
 function UserBookingCard(props) {
+  function removeBooking() {
+    console.log(props.id);
+    fetch(`http://localhost:8000/remove-booking/${props.id}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        fetch(
+          `https://park-it-omega.vercel.app/user-bookings?email=${props.userEmail}`
+        )
+          .then((res) => res.json())
+          .then((docs) => {
+            console.log(docs);
+            props.setUserBookings(docs);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className="userBookingCard">
       <p>
@@ -27,7 +49,7 @@ function UserBookingCard(props) {
         Departure Time: <b>{props.departure.split(props.date)[1]}</b>
       </p>
 
-      <button>Cancel Booking</button>
+      <button onClick={removeBooking}>Cancel Booking</button>
     </div>
   );
 }

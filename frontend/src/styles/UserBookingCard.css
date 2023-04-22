@@ -18,3 +18,9 @@
   cursor: pointer;
   background-color: #ccb7ff;
 }
+
+@media (max-width: 550px) {
+  .userBookingCard p {
+    font-size: 15px !important;
+  }
+}

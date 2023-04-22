@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as userActions } from "../app/userSlice";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState, useEffect } from "react";
 
@@ -18,8 +18,15 @@ function Navbar() {
   const [userStatus, setUserStatus] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
-    setUserStatus(userState.user);
-  }, [userState]);
+    // setUserStatus(userState.user);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserStatus(user.email);
+      } else {
+        setUserStatus(null);
+      }
+    });
+  }, []);
 
   function toggleAuthOptions() {
     document

@@ -37,19 +37,27 @@ function UserBookingsPage() {
   return (
     <div className="userBookingPage">
       <p>Active Bookings</p>
-      {userBookings.map((booking) => (
-        <UserBookingCard
-          key={booking._id}
-          vehicleType={booking.vehicleType}
-          vehicleNumber={booking.vehicleNumber}
-          block={booking.block}
-          slot={booking.slot}
-          id={booking._id}
-          date={booking.date}
-          arrival={booking.arrival}
-          departure={booking.departure}
-        />
-      ))}
+      {userBookings.length == 0 ? (
+        <p className="userBookingPage__noBookingMessage">
+          Sorry, no bookings found.
+        </p>
+      ) : (
+        userBookings.map((booking) => (
+          <UserBookingCard
+            key={booking._id}
+            vehicleType={booking.vehicleType}
+            vehicleNumber={booking.vehicleNumber}
+            block={booking.block}
+            slot={booking.slot}
+            id={booking._id}
+            date={booking.date}
+            arrival={booking.arrival}
+            departure={booking.departure}
+            userEmail={userEmail}
+            setUserBookings={setUserBookings}
+          />
+        ))
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 const express = require("express");
 const { connectToDb, getDb } = require("./db");
 const cors = require("cors");
+const { ObjectId } = require("mongodb");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -91,6 +92,23 @@ app.get("/user-bookings", (req, res) => {
       console.log(err);
       res.json({ error: "Cannot fetch documents" });
     });
+});
+
+app.delete("/remove-booking/:id", (req, res) => {
+  console.log(req.params.id);
+
+  if (ObjectId.isValid(req.params.id)) {
+    db.collection("parking")
+      .deleteOne({
+        _id: new ObjectId(req.params.id),
+      })
+      .then((result) => res.status(200).json(result))
+      .catch((err) => res.status(500).json(err));
+  } else {
+    res.status(400).json({
+      error_message: "Invalid Id",
+    });
+  }
 });
 
 app.post("/add-booking", (req, res) => {
