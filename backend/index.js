@@ -72,6 +72,27 @@ app.get("/time-slots", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+app.get("/user-bookings", (req, res) => {
+  console.log(req.query.email);
+
+  db.collection("parking")
+    .find({ email: req.query.email })
+    .toArray()
+    .then((docs) => {
+      console.log(docs);
+      docs.sort((doc1, doc2) => {
+        return (
+          new Date(doc1.arrival).getTime() - new Date(doc2.arrival).getTime()
+        );
+      });
+      res.status(200).json(docs);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json({ error: "Cannot fetch documents" });
+    });
+});
+
 app.post("/add-booking", (req, res) => {
   // db.collection("parking")
   //   .insertOne({

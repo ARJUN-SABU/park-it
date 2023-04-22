@@ -1,16 +1,24 @@
 //packages
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../app/parkingSlice";
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 //styles
 import "../styles/ParkingBooking.css";
 
 function ParkingBooking({ setSlotBookings }) {
   const parkingState = useSelector((state) => state.parking);
+  const userState = useSelector((state) => state.user);
+  const [userStatus, setUserStatus] = useState(null);
   const dispatch = useDispatch();
   const vehicleType = useRef();
   const vehicleNumber = useRef();
+
+  useEffect(() => {
+    setUserStatus(userState.user);
+    console.log("I am the user", userState.user);
+  }, [userState]);
 
   function bookParking() {
     if (vehicleType.current.value == "") {
@@ -33,6 +41,7 @@ function ParkingBooking({ setSlotBookings }) {
         expireAt: new Date(`${parkingState.date} ${parkingState.departure}`), //same as departure time
         arrival: `${parkingState.date} ${parkingState.arrival}`,
         departure: `${parkingState.date} ${parkingState.departure}`,
+        email: userStatus,
       };
 
       console.log(data);
@@ -118,9 +127,17 @@ function ParkingBooking({ setSlotBookings }) {
           placeholder="Vehicle Number"
           ref={vehicleNumber}
         ></input>
-        <button className="parkingBooking__bookButton" onClick={bookParking}>
-          Book
-        </button>
+        {userStatus ? (
+          <button className="parkingBooking__bookButton" onClick={bookParking}>
+            Book
+          </button>
+        ) : (
+          <Link to="/login">
+            <button className="parkingBooking__signInButton">
+              Sign In to Book
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );

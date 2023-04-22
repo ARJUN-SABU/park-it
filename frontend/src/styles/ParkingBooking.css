@@ -1,8 +1,6 @@
 .parkingBooking {
-  /* background-color: antiquewhite; */
   background-color: #f8f5ff;
   position: relative;
-  /* height: 500px; */
   width: 80%;
   max-width: 500px;
   padding: 20px;
@@ -48,5 +46,15 @@
   outline: none;
   padding: 8px;
   cursor: pointer;
+  margin-top: 15px;
+}
+
+.parkingBooking__signInButton {
+  background-color: #ccb7ff;
+  border: 1px solid black;
+  outline: none;
+  padding: 8px;
+  cursor: pointer;
+  width: 100%;
   margin-top: 15px;
 }
