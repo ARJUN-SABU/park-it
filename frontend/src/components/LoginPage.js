@@ -7,9 +7,6 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { actions as userActions } from "../app/userSlice";
-import {} from "firebase/auth";
 
 //styles
 import "../styles/LoginPage.css";
@@ -25,8 +22,6 @@ function LoginPage() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         navigate("/");
-      } else {
-        console.log("user is logged out");
       }
     });
   }, []);
@@ -43,17 +38,10 @@ function LoginPage() {
         signUpPassword.current.value
       )
         .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          //   console.log(user);
           navigate("/");
-          // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          //   console.log(error);
-          // ..
+          console.log(error);
         });
     }
   }
@@ -70,15 +58,10 @@ function LoginPage() {
         signInPassword.current.value
       )
         .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          //   console.log(user);
           navigate("/");
-          // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
+          console.log(error);
         });
     }
   }

@@ -18,7 +18,6 @@ function ParkingBooking({ setSlotBookings }) {
 
   useEffect(() => {
     setUserStatus(userState.user);
-    console.log("I am the user", userState.user);
   }, [userState]);
 
   function bookParking() {
@@ -45,8 +44,6 @@ function ParkingBooking({ setSlotBookings }) {
         email: userStatus,
       };
 
-      console.log(data);
-      // let url1 = "http://localhost:8000/add-booking/";
       let url2 = "https://park-it-omega.vercel.app/add-booking/";
       fetch(url2, {
         method: "POST",
@@ -57,13 +54,11 @@ function ParkingBooking({ setSlotBookings }) {
       })
         .then((res) => res.json())
         .then((data) => {
-          // let url1 = `http://localhost:8000/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
           let url = `https://park-it-omega.vercel.app/time-slots?date=${parkingState.date}&arrivalTime=${parkingState.arrival}&departureTime=${parkingState.departure}`;
-          console.log(url);
+
           fetch(url)
             .then((res) => res.json())
             .then((data) => {
-              console.log("This is the data", data);
               setSlotBookings(data);
               dispatch(
                 actions.setParkingDetails({

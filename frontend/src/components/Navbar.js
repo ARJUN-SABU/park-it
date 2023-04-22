@@ -18,7 +18,6 @@ function Navbar() {
   const [userStatus, setUserStatus] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
-    // setUserStatus(userState.user);
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserStatus(user.email);
@@ -37,12 +36,9 @@ function Navbar() {
   function signOutUser() {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
-        // navigate
         dispatch(userActions.setUser(null));
       })
       .catch((error) => {
-        // An error happened.
         console.log(error);
       });
   }

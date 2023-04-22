@@ -24,7 +24,6 @@ function UserBookingsPage() {
         )
           .then((res) => res.json())
           .then((docs) => {
-            console.log(docs);
             setUserBookings(docs);
           })
           .catch((err) => console.log(err));

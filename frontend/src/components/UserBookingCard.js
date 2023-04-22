@@ -3,7 +3,6 @@ import "../styles/UserBookingCard.css";
 
 function UserBookingCard(props) {
   function removeBooking() {
-    console.log(props.id);
     fetch(`https://park-it-omega.vercel.app/remove-booking/${props.id}`, {
       method: "delete",
       headers: {
@@ -16,7 +15,6 @@ function UserBookingCard(props) {
         )
           .then((res) => res.json())
           .then((docs) => {
-            console.log(docs);
             props.setUserBookings(docs);
           })
           .catch((err) => console.log(err));

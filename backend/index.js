@@ -1,7 +1,7 @@
 const express = require("express");
+const { ObjectId } = require("mongodb");
 const { connectToDb, getDb } = require("./db");
 const cors = require("cors");
-const { ObjectId } = require("mongodb");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -24,12 +24,13 @@ app.use(
   })
 );
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
 
 //routes
-app.get("/time-slots", (req, res) => {
-  console.log(req.query);
 
+//get the booking details
+//overlapping with the given particluar
+//date, arrival and departure times.
+app.get("/time-slots", (req, res) => {
   let blockA = [];
   let blockB = [];
   let blockC = [];
@@ -73,14 +74,12 @@ app.get("/time-slots", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+//get the booking details of a particular user
 app.get("/user-bookings", (req, res) => {
-  console.log(req.query.email);
-
   db.collection("parking")
     .find({ email: req.query.email })
     .toArray()
     .then((docs) => {
-      console.log(docs);
       docs.sort((doc1, doc2) => {
         return (
           new Date(doc1.arrival).getTime() - new Date(doc2.arrival).getTime()
@@ -89,14 +88,12 @@ app.get("/user-bookings", (req, res) => {
       res.status(200).json(docs);
     })
     .catch((err) => {
-      console.log(err);
-      res.json({ error: "Cannot fetch documents" });
+      res.status(500).json(err);
     });
 });
 
+//delete a particular booking
 app.delete("/remove-booking/:id", (req, res) => {
-  console.log(req.params.id);
-
   if (ObjectId.isValid(req.params.id)) {
     db.collection("parking")
       .deleteOne({
@@ -111,25 +108,11 @@ app.delete("/remove-booking/:id", (req, res) => {
   }
 });
 
+//add a booking to the database
 app.post("/add-booking", (req, res) => {
-  // db.collection("parking")
-  //   .insertOne({
-  //     vehicleType: "Sedan",
-  //     vehicleNumber: "Ciaz",
-  //     expireAt: new Date("April 22, 2023 19:30:00"), //same as departure time
-  //     date: new Date("April 22, 2023").toDateString(),
-  //     arrival: new Date("April 22, 2023 18:00:00"),
-  //     departure: new Date("April 22, 2023 19:30:00"),
-  //     block: "B",
-  //     slot: 7,
-  //   })
-  //   .then((result) => res.status(200).json(result))
-  //   .catch((err) => console.log(err));
-  console.log(req.body);
   req.body.expireAt = new Date(req.body.expireAt);
-  console.log(req.body);
   db.collection("parking")
     .insertOne(req.body)
     .then((result) => res.status(200).json(result))
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).json(err));
 });

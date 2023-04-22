@@ -7,7 +7,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 
 //components
-import Navbar from "./Navbar";
 import DateTimePicker from "./DateTimePicker";
 import ParkingArea from "./ParkingArea";
 import ParkingBooking from "./ParkingBooking";
@@ -37,28 +36,15 @@ function HomePage() {
   });
 
   useEffect(() => {
-    console.log(parkingState);
-  }, [parkingState]);
-
-  useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const uid = user.uid;
-        // console.log("uid", uid);
-        // console.log("New User ", user.email);
         dispatch(userActions.setUser(user.email));
-      } else {
-        console.log("user is logged out");
       }
     });
   }, []);
 
   //utility functions
   function getParkingSlotBookings() {
-    console.log(date);
-    console.log(arrivalTime);
-    console.log(departureTime);
-
     let currentTime = new Date().getTime();
     let newArrivalTime = new Date(`${date} ${arrivalTime}`).getTime();
     let newDepartureTime = new Date(`${date} ${departureTime}`).getTime();
@@ -71,14 +57,11 @@ function HomePage() {
       alert("Departure Time must be greater than Arrival time.");
     } else {
       //get the bookings
-      let url1 = `http://localhost:8000/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
-      let url2 = `https://park-it-omega.vercel.app/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
+      let url = `https://park-it-omega.vercel.app/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
       setShowLoader(true);
-      // console.log(url2);
-      fetch(url2)
+      fetch(url)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setSlotBookings(data);
           setShowLoader(false);
         })
@@ -99,8 +82,6 @@ function HomePage() {
 
   return (
     <div className="homePage">
-      {/* <Navbar /> */}
-
       <div className="dateTimeSearch">
         <DateTimePicker
           date={date}
