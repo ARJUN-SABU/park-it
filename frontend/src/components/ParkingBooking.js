@@ -2,12 +2,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../app/parkingSlice";
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //styles
 import "../styles/ParkingBooking.css";
 
 function ParkingBooking({ setSlotBookings }) {
+  const navigate = useNavigate();
   const parkingState = useSelector((state) => state.parking);
   const userState = useSelector((state) => state.user);
   const [userStatus, setUserStatus] = useState(null);
@@ -132,11 +133,26 @@ function ParkingBooking({ setSlotBookings }) {
             Book
           </button>
         ) : (
-          <Link to="/login">
-            <button className="parkingBooking__signInButton">
-              Sign In to Book
-            </button>
-          </Link>
+          <button
+            className="parkingBooking__signInButton"
+            onClick={() => {
+              navigate("/login");
+              dispatch(
+                actions.setParkingDetails({
+                  block: parkingState.block,
+                  slot: parkingState.slot,
+                  showParkingBooking: false,
+                  bookedSlotDetails: null,
+                  date: parkingState.date,
+                  arrival: parkingState.arrival,
+                  departure: parkingState.departure,
+                })
+              );
+              document.querySelector("body").style.overflowY = "scroll";
+            }}
+          >
+            Sign In to Book
+          </button>
         )}
       </div>
     </div>
