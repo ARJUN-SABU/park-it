@@ -40,3 +40,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.homePage__loader {
+  color: white;
+}

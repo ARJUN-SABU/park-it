@@ -22,6 +22,7 @@ function HomePage() {
   const dispatch = useDispatch();
 
   //states
+  const [showLoader, setShowLoader] = useState(false);
   const [date, setDate] = useState(new Date().toDateString());
   const [arrivalTime, setArrivalTime] = useState(
     `${new Date().getHours()}:${new Date().getMinutes()}`
@@ -52,10 +53,6 @@ function HomePage() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log(userState);
-  // }, [userState]);
-
   //utility functions
   function getParkingSlotBookings() {
     console.log(date);
@@ -76,12 +73,14 @@ function HomePage() {
       //get the bookings
       let url1 = `http://localhost:8000/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
       let url2 = `https://park-it-omega.vercel.app/time-slots?date=${date}&arrivalTime=${arrivalTime}&departureTime=${departureTime}`;
+      setShowLoader(true);
       // console.log(url2);
       fetch(url2)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
           setSlotBookings(data);
+          setShowLoader(false);
         })
         .catch((err) => console.log(err));
 
@@ -109,7 +108,9 @@ function HomePage() {
           setArrivalTime={setArrivalTime}
           setDepartureTime={setDepartureTime}
         />
-        <button onClick={getParkingSlotBookings}>Find Parking</button>
+        <button onClick={getParkingSlotBookings}>
+          <b>Find Parking</b>
+        </button>
       </div>
 
       <ParkingArea slotBookings={slotBookings} />
@@ -128,6 +129,12 @@ function HomePage() {
         </div>
       ) : (
         ""
+      )}
+
+      {showLoader && (
+        <div className="parkingBookingOverlay">
+          <h1 className="homePage__loader">Loading...</h1>
+        </div>
       )}
     </div>
   );

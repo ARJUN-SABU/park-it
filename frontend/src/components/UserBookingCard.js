@@ -49,7 +49,9 @@ function UserBookingCard(props) {
         Departure Time: <b>{props.departure.split(props.date)[1]}</b>
       </p>
 
-      <button onClick={removeBooking}>Cancel Booking</button>
+      <button onClick={removeBooking}>
+        <b>Cancel Booking</b>
+      </button>
     </div>
   );
 }
