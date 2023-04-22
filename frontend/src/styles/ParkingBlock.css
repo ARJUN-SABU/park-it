@@ -1,7 +1,5 @@
 .parkingBlock {
-  /* margin: 0 20px; */
   padding: 20px 0;
-  /* border: 1px solid black; */
   border-right: 2px solid #4e4e4e;
   background-color: white;
   box-shadow: 0px 5px 5px 0 #dadada;
@@ -19,7 +17,6 @@
   font-weight: 700;
   margin-bottom: 20px;
   font-size: 18px;
-  /* letter-spacing: 1px; */
 }
 .parkingBlockText {
   text-align: center;

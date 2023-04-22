@@ -1,5 +1,5 @@
 //packages
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -17,6 +17,8 @@ function LoginPage() {
   const signInEmail = useRef();
   const signInPassword = useRef();
   const navigate = useNavigate();
+  const [showLoginError, setShowLoginError] = useState(false);
+  const [showSignUpError, setShowSignUpError] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -38,10 +40,11 @@ function LoginPage() {
         signUpPassword.current.value
       )
         .then((userCredential) => {
+          setShowSignUpError(false);
           navigate("/");
         })
         .catch((error) => {
-          console.log(error);
+          setShowSignUpError(true);
         });
     }
   }
@@ -58,10 +61,11 @@ function LoginPage() {
         signInPassword.current.value
       )
         .then((userCredential) => {
+          setShowLoginError(false);
           navigate("/");
         })
         .catch((error) => {
-          console.log(error);
+          setShowLoginError(true);
         });
     }
   }
@@ -76,6 +80,11 @@ function LoginPage() {
           placeholder="password"
           ref={signInPassword}
         ></input>
+        {showLoginError && (
+          <p className="login__errorMessage">
+            Invalid Email or Password. Try again!
+          </p>
+        )}
         <button onClick={signInUser}>Sign In</button>
       </div>
       <div className="loginPage__inputBox">
@@ -86,6 +95,11 @@ function LoginPage() {
           placeholder="password"
           ref={signUpPassword}
         ></input>
+        {showSignUpError && (
+          <p className="login__errorMessage">
+            Invalid Email or Password. Try again!
+          </p>
+        )}
         <button onClick={signUpUser}>Sign Up</button>
       </div>
     </div>
