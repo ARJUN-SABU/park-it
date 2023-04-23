@@ -19,6 +19,8 @@ function ParkingSlot({ bookingStatus, slotPosition, block, slot }) {
           date: parkingState.date,
           arrival: parkingState.arrival,
           departure: parkingState.departure,
+          xCoordinate: parkingState.xCoordinate,
+          yCoordinate: parkingState.yCoordinate,
         })
       );
     } else {
@@ -31,6 +33,8 @@ function ParkingSlot({ bookingStatus, slotPosition, block, slot }) {
           date: parkingState.date,
           arrival: parkingState.arrival,
           departure: parkingState.departure,
+          xCoordinate: parkingState.xCoordinate,
+          yCoordinate: parkingState.yCoordinate,
         })
       );
     }

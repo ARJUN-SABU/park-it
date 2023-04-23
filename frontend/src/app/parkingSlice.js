@@ -7,6 +7,8 @@ const initialState = {
   date: "",
   arrival: "",
   departure: "",
+  xCoordinate: "",
+  yCoordinate: "",
 };
 
 const parkingSlice = createSlice({
@@ -21,6 +23,8 @@ const parkingSlice = createSlice({
       state.date = action.payload.date;
       state.arrival = action.payload.arrival;
       state.departure = action.payload.departure;
+      state.xCoordinate = action.payload.xCoordinate;
+      state.yCoordinate = action.payload.yCoordinate;
     },
   },
 });

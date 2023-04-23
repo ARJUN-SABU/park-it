@@ -42,6 +42,8 @@ function ParkingBooking({ setSlotBookings }) {
         arrival: `${parkingState.date} ${parkingState.arrival}`,
         departure: `${parkingState.date} ${parkingState.departure}`,
         email: userStatus,
+        xCoordinate: parkingState.xCoordinate,
+        yCoordinate: parkingState.yCoordinate,
       };
 
       let url2 = "https://park-it-omega.vercel.app/add-booking/";
@@ -96,6 +98,13 @@ function ParkingBooking({ setSlotBookings }) {
             })
           );
           document.querySelector("body").style.overflowY = "scroll";
+          let marker = document.querySelector(
+            `#parkingMarker-${parkingState.block}${parkingState.slot}`
+          );
+          if (marker)
+            document
+              .querySelector(".parkingView__imageWrapper")
+              .removeChild(marker);
         }}
       >
         X

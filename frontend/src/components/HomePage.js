@@ -11,6 +11,7 @@ import DateTimePicker from "./DateTimePicker";
 import ParkingArea from "./ParkingArea";
 import ParkingBooking from "./ParkingBooking";
 import BookedSlotDetailsCard from "./BookedSlotDetailsCard";
+import ParkingView from "./ParkingView";
 
 //styles
 import ".././styles/HomePage.css";
@@ -30,9 +31,9 @@ function HomePage() {
     `${new Date().getHours()}:${new Date().getMinutes()}`
   );
   const [slotBookings, setSlotBookings] = useState({
-    blockA: [null, null, null, null, null, null, null, null],
-    blockB: [null, null, null, null, null, null, null, null],
-    blockC: [null, null, null, null, null, null, null, null],
+    blockA: [null, null, null, null, null, null],
+    blockB: [null, null, null, null, null, null],
+    blockC: [null, null, null, null, null, null],
   });
 
   useEffect(() => {
@@ -94,7 +95,8 @@ function HomePage() {
         </button>
       </div>
 
-      <ParkingArea slotBookings={slotBookings} />
+      {/* <ParkingArea slotBookings={slotBookings} /> */}
+      <ParkingView slotBookings={slotBookings} />
 
       {parkingState.showParkingBooking ? (
         <div className="parkingBookingOverlay">
