@@ -34,7 +34,7 @@ app.get("/time-slots", (req, res) => {
   let blockA = [];
   let blockB = [];
   let blockC = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 6; i++) {
     blockA.push(null);
     blockB.push(null);
     blockC.push(null);
@@ -58,6 +58,8 @@ app.get("/time-slots", (req, res) => {
           newDoc = {
             arrival: doc.arrival,
             departure: doc.departure,
+            xCoordinate: doc.xCoordinate,
+            yCoordinate: doc.yCoordinate,
           };
         }
 

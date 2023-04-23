@@ -1,0 +1,37 @@
+.parkingView {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.parkingView__imageWrapper {
+  position: relative;
+  overflow-x: scroll;
+  display: flex;
+  margin: 0 10px;
+  box-shadow: 5px 5px 5px 0 gray;
+}
+.parkingView__imageWrapper img {
+  width: 1000px;
+}
+
+area {
+  cursor: pointer;
+}
+
+.parkingMarker {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  position: absolute;
+}
+
+.parkingMarker--green {
+  background-color: green;
+}
+
+.parkingMarker--red {
+  background-color: red;
+}
