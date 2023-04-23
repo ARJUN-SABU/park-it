@@ -14,22 +14,60 @@ function ParkingView({ slotBookings }) {
   const parkingState = useSelector((state) => state.parking);
 
   useEffect(() => {
+    markSlotNumbers();
+  }, []);
+
+  useEffect(() => {
     //fetch slots from the database.
-    console.log(slotBookings);
     removeAllMarkers();
-    markBookedSlots(slotBookings.blockA);
-    markBookedSlots(slotBookings.blockB);
-    markBookedSlots(slotBookings.blockC);
+    markBookedSlots(slotBookings.blockA, "A");
+    markBookedSlots(slotBookings.blockB, "B");
+    markBookedSlots(slotBookings.blockC, "C");
   }, [slotBookings]);
 
-  function markBookedSlots(slotBookingData) {
-    slotBookingData.forEach((slot) => {
+  function markSlotNumbers() {
+    ParkingLotData.map((slot) => {
+      let coordinates = slot.coords.split(",");
+      let bottomXCoordinate = Number(coordinates[2]);
+      let bottomYCoordinate = Number(coordinates[3]);
+
+      let slotNumber = document.createElement("p");
+      slotNumber.innerText = `${slot.block}${slot.slot}`;
+      slotNumber.classList.add("parkingView__slotNumber");
+      slotNumber.style.left = bottomXCoordinate - 28 + "px";
+      slotNumber.style.top = bottomYCoordinate - 28 + "px";
+
+      document
+        .querySelector(".parkingView__imageWrapper")
+        .appendChild(slotNumber);
+    });
+  }
+
+  function markBookedSlots(slotBookingData, block) {
+    slotBookingData.forEach((slot, index) => {
       if (slot) {
         let slotMarker = document.createElement("div");
         slotMarker.classList.add("parkingMarker--red");
         slotMarker.classList.add("parkingMarker");
         slotMarker.style.left = `${slot.xCoordinate}px`;
         slotMarker.style.top = `${slot.yCoordinate}px`;
+
+        slotMarker.addEventListener("click", function () {
+          dispatch(
+            actions.setParkingDetails({
+              block: block,
+              slot: index,
+              showParkingBooking: false,
+              bookedSlotDetails: slot,
+              date: parkingState.date,
+              arrival: parkingState.arrival,
+              departure: parkingState.departure,
+              xCoordinate: parkingState.xCoordinate,
+              yCoordinate: parkingState.yCoordinate,
+            })
+          );
+        });
+
         document
           .querySelector(".parkingView__imageWrapper")
           .appendChild(slotMarker);
@@ -42,15 +80,10 @@ function ParkingView({ slotBookings }) {
       document.querySelector(".parkingView__imageWrapper").removeChild(point)
     );
   }
-  function removeOneMarker(markerId) {
-    let marker = document.querySelector(`#${markerId}`);
-    if (marker)
-      document.querySelector(".parkingView__imageWrapper").removeChild(marker);
-  }
 
   function markSlotForBooking(event, block, slot) {
     if (slotBookings[`block${block}`][slot]) {
-      //show booking details
+      //if the slot is already booked.
       dispatch(
         actions.setParkingDetails({
           block: block,
@@ -84,14 +117,13 @@ function ParkingView({ slotBookings }) {
     //the center of the circle is at the calculated coordinates.
     averageXCoordinate = averageXCoordinate - 20;
     averageYCoordinate = averageYCoordinate - 20;
-    console.log(averageXCoordinate, averageYCoordinate);
+
     slotMarker.style.left = `${averageXCoordinate}px`;
     slotMarker.style.top = `${averageYCoordinate}px`;
 
     //if green dot was already placed before, no need to place it again
 
     if (!document.querySelector(`#parkingMarker-${block}${slot}`)) {
-      console.log("placed");
       document
         .querySelector(".parkingView__imageWrapper")
         .appendChild(slotMarker);
@@ -116,6 +148,7 @@ function ParkingView({ slotBookings }) {
 
   return (
     <div className="parkingView">
+      <p className="parkingView__message">Select your Parking Slot</p>
       <div className="parkingView__imageWrapper">
         <img src="ParkingImage.jpg" useMap="#image-map"></img>
       </div>

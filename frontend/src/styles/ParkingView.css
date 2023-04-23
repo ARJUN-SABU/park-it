@@ -1,12 +1,25 @@
 .parkingView {
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
+  margin: 30px 0 30px;
+}
+.parkingView__message {
+  font-size: 18px;
+  text-align: center;
+  border: 1px solid black;
+  border-bottom: none;
+  /* margin-bottom: 20px; */
+  font-weight: 600;
+  padding: 10px 20px;
+  background-color: white;
 }
 
 .parkingView__imageWrapper {
+  width: 90%;
+  max-width: max-content;
   position: relative;
   overflow-x: scroll;
   display: flex;
@@ -26,6 +39,7 @@ area {
   height: 40px;
   border-radius: 100%;
   position: absolute;
+  cursor: pointer;
 }
 
 .parkingMarker--green {
@@ -34,4 +48,13 @@ area {
 
 .parkingMarker--red {
   background-color: red;
+}
+
+.parkingView__slotNumber {
+  position: absolute;
+  background-color: #2a2a2a;
+  color: white;
+  font-size: 11px;
+  padding: 7px;
+  font-weight: 800;
 }
