@@ -50,7 +50,9 @@ function HomePage() {
     let newArrivalTime = new Date(`${date} ${arrivalTime}`).getTime();
     let newDepartureTime = new Date(`${date} ${departureTime}`).getTime();
 
-    if (newArrivalTime <= currentTime) {
+    if (date == "" || date == "Invalid Date") {
+      alert("Please select a date.");
+    } else if (newArrivalTime <= currentTime) {
       alert("Arrival Time must be greater than current time.");
     } else if (newDepartureTime <= currentTime) {
       alert("Departure Time must be greater than current time.");
