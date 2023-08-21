@@ -114,7 +114,7 @@ let temporaryBookingLog = new Map();
 
 //add a booking to the database
 app.post("/add-booking", (req, res) => {
-  console.log(req.body.expireAtUTCFormat);
+  console.log(temporaryBookingLog);
   console.log("Expiry ---> ", new Date(req.body.expireAtUTCFormat));
   console.log("Today ---> ", new Date());
   console.log(new Date(req.body.expireAtUTCFormat) - new Date());
@@ -141,6 +141,9 @@ app.post("/add-booking", (req, res) => {
       temporaryBookingLog.get(req.body.date).push({
         arrivalTime: new Date(req.body.arrival).getTime(),
         departureTime: new Date(req.body.departure).getTime(),
+
+        arrival_new_field: req.body.arrival,
+        departure_new_field: req.body.departure,
       });
       let timeout = setTimeout(() => {
         let newTemporaryBookings = temporaryBookingLog
@@ -180,6 +183,8 @@ app.post("/add-booking", (req, res) => {
       {
         arrivalTime: new Date(req.body.arrival).getTime(),
         departureTime: new Date(req.body.departure).getTime(),
+        arrival_new_field: req.body.arrival,
+        departure_new_field: req.body.departure,
       },
     ]);
 
