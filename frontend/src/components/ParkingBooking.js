@@ -32,6 +32,10 @@ function ParkingBooking({ setSlotBookings }) {
     } else if (parkingState.departure == "") {
       alert("Please select the departure time");
     } else {
+      console.log(new Date(`${parkingState.date} ${parkingState.departure}`));
+      console.log(
+        new Date(`${parkingState.date} ${parkingState.departure}`).toUTCString()
+      );
       let data = {
         vehicleType: vehicleType.current.value,
         vehicleNumber: vehicleNumber.current.value,
