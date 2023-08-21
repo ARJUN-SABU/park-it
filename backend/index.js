@@ -114,6 +114,7 @@ let temporaryBookingLog = new Map();
 
 //add a booking to the database
 app.post("/add-booking", (req, res) => {
+  console.log(req.body.expireAtUTCFormat);
   console.log("Expiry ---> ", new Date(req.body.expireAtUTCFormat));
   console.log("Today ---> ", new Date());
   console.log(new Date(req.body.expireAtUTCFormat) - new Date());
