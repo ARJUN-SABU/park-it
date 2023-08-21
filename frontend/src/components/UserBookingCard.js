@@ -4,10 +4,18 @@ import "../styles/UserBookingCard.css";
 function UserBookingCard(props) {
   function removeBooking() {
     fetch(`https://park-it-omega.vercel.app/remove-booking/${props.id}`, {
+      // fetch(`http://localhost:8000/remove-booking/${props.id}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        block: props.block,
+        slot: props.slot,
+        arrival: props.arrival,
+        departure: props.departure,
+        date: props.date,
+      }),
     })
       .then((res) => {
         fetch(

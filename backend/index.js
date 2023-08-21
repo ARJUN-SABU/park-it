@@ -94,6 +94,8 @@ app.get("/user-bookings", (req, res) => {
     });
 });
 
+let temporaryBookingLog = new Map();
+
 //delete a particular booking
 app.delete("/remove-booking/:id", (req, res) => {
   if (ObjectId.isValid(req.params.id)) {
@@ -101,7 +103,26 @@ app.delete("/remove-booking/:id", (req, res) => {
       .deleteOne({
         _id: new ObjectId(req.params.id),
       })
-      .then((result) => res.status(200).json(result))
+      .then((result) => {
+        console.log(req.body);
+
+        let newTemporaryBookings = temporaryBookingLog
+          .get(req.body.date)
+          .filter(
+            (booking) =>
+              `${booking.block}${booking.slot}` !==
+                `${req.body.block}${req.body.slot}` ||
+              booking.arrivalTime !== new Date(req.body.arrival).getTime() ||
+              booking.departureTime !== new Date(req.body.departure).getTime()
+          );
+
+        temporaryBookingLog.set(req.body.date, newTemporaryBookings);
+        if (temporaryBookingLog.get(req.body.date).length === 0) {
+          temporaryBookingLog.delete(req.body.date);
+        }
+
+        res.status(200).json(result);
+      })
       .catch((err) => res.status(500).json(err));
   } else {
     res.status(400).json({
@@ -110,30 +131,33 @@ app.delete("/remove-booking/:id", (req, res) => {
   }
 });
 
-let temporaryBookingLog = new Map();
-
 //add a booking to the database
 app.post("/add-booking", (req, res) => {
   console.log(temporaryBookingLog);
-  console.log("Expiry ---> ", new Date(req.body.expireAtUTCFormat));
-  console.log("Today ---> ", new Date());
-  console.log(new Date(req.body.expireAtUTCFormat) - new Date());
+  // console.log("Expiry ---> ", new Date(req.body.expireAtUTCFormat));
+  // console.log("Today ---> ", new Date());
+  // console.log(new Date(req.body.expireAtUTCFormat) - new Date());
 
   if (temporaryBookingLog.has(req.body.date)) {
     let foundOverlapping = false;
     for (booking of temporaryBookingLog.get(req.body.date)) {
       if (
-        booking.arrivalTime < new Date(req.body.departure).getTime() &&
-        new Date(req.body.arrival).getTime() < booking.departureTime
+        `${booking.block}${booking.slot}` ===
+        `${req.body.block}${req.body.slot}`
       ) {
-        foundOverlapping = true;
-        break;
+        if (
+          booking.arrivalTime < new Date(req.body.departure).getTime() &&
+          new Date(req.body.arrival).getTime() < booking.departureTime
+        ) {
+          foundOverlapping = true;
+          break;
+        }
       }
     }
 
     if (foundOverlapping) {
       res.status(500).json({
-        error_message: "Sorry! The slot is already booked!",
+        error_message: "Sorry, the slot is already booked!",
       });
 
       console.log("Sorry! The slot is already booked!");
@@ -141,16 +165,17 @@ app.post("/add-booking", (req, res) => {
       temporaryBookingLog.get(req.body.date).push({
         arrivalTime: new Date(req.body.arrival).getTime(),
         departureTime: new Date(req.body.departure).getTime(),
-
-        arrival_new_field: req.body.arrival,
-        departure_new_field: req.body.departure,
+        block: req.body.block,
+        slot: req.body.slot,
       });
       let timeout = setTimeout(() => {
         let newTemporaryBookings = temporaryBookingLog
           .get(req.body.date)
           .filter(
             (booking) =>
-              booking.arrivalTime !== new Date(req.body.arrival).getTime() &&
+              `${booking.block}${booking.slot}` !==
+                `${req.body.block}${req.body.slot}` ||
+              booking.arrivalTime !== new Date(req.body.arrival).getTime() ||
               booking.departureTime !== new Date(req.body.departure).getTime()
           );
 
@@ -158,9 +183,8 @@ app.post("/add-booking", (req, res) => {
         if (temporaryBookingLog.get(req.body.date).length === 0) {
           temporaryBookingLog.delete(req.body.date);
         }
-        console.log(temporaryBookingLog);
+        // console.log(temporaryBookingLog);
       }, new Date(req.body.expireAt) - new Date());
-      // temporaryBookingTimeouts.push(timeout);
 
       //do the booking....
       //after booking is done, make sure to
@@ -183,8 +207,8 @@ app.post("/add-booking", (req, res) => {
       {
         arrivalTime: new Date(req.body.arrival).getTime(),
         departureTime: new Date(req.body.departure).getTime(),
-        arrival_new_field: req.body.arrival,
-        departure_new_field: req.body.departure,
+        block: req.body.block,
+        slot: req.body.slot,
       },
     ]);
 
@@ -193,7 +217,9 @@ app.post("/add-booking", (req, res) => {
         .get(req.body.date)
         .filter(
           (booking) =>
-            booking.arrivalTime !== new Date(req.body.arrival).getTime() &&
+            `${booking.block}${booking.slot}` !==
+              `${req.body.block}${req.body.slot}` ||
+            booking.arrivalTime !== new Date(req.body.arrival).getTime() ||
             booking.departureTime !== new Date(req.body.departure).getTime()
         );
 
@@ -201,8 +227,7 @@ app.post("/add-booking", (req, res) => {
       if (temporaryBookingLog.get(req.body.date).length === 0) {
         temporaryBookingLog.delete(req.body.date);
       }
-
-      console.log(temporaryBookingLog);
+      // console.log(temporaryBookingLog);
     }, new Date(req.body.expireAt) - new Date());
 
     //do the booking....

@@ -32,14 +32,6 @@ function ParkingBooking({ setSlotBookings }) {
     } else if (parkingState.departure == "") {
       alert("Please select the departure time");
     } else {
-      console.log(
-        "IST ---> ",
-        new Date(`${parkingState.date} ${parkingState.departure}`)
-      );
-      console.log(
-        "UTC ---> ",
-        new Date(`${parkingState.date} ${parkingState.departure}`).toUTCString()
-      );
       let data = {
         vehicleType: vehicleType.current.value,
         vehicleNumber: vehicleNumber.current.value,
@@ -70,25 +62,30 @@ function ParkingBooking({ setSlotBookings }) {
       })
         .then((res) => res.json())
         .then((data) => {
-          let url = `https://park-it-omega.vercel.app/time-slots?date=${parkingState.date}&arrivalTime=${parkingState.arrival}&departureTime=${parkingState.departure}`;
+          console.log("I am hahaha -> ", data);
+          if (data.error_message) {
+            alert(data.error_message);
+          } else {
+            let url = `https://park-it-omega.vercel.app/time-slots?date=${parkingState.date}&arrivalTime=${parkingState.arrival}&departureTime=${parkingState.departure}`;
 
-          fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-              setSlotBookings(data);
-              dispatch(
-                actions.setParkingDetails({
-                  block: "",
-                  slot: "",
-                  showParkingBooking: false,
-                  bookedSlotDetails: null,
-                  date: "",
-                  arrival: "",
-                  departure: "",
-                })
-              );
-            })
-            .catch((err) => console.log(err));
+            fetch(url)
+              .then((res) => res.json())
+              .then((data) => {
+                setSlotBookings(data);
+                dispatch(
+                  actions.setParkingDetails({
+                    block: "",
+                    slot: "",
+                    showParkingBooking: false,
+                    bookedSlotDetails: null,
+                    date: "",
+                    arrival: "",
+                    departure: "",
+                  })
+                );
+              })
+              .catch((err) => console.log(err));
+          }
         })
         .catch((err) => console.log(err));
     }
