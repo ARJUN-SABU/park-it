@@ -104,8 +104,6 @@ app.delete("/remove-booking/:id", (req, res) => {
         _id: new ObjectId(req.params.id),
       })
       .then((result) => {
-        console.log(req.body);
-
         let newTemporaryBookings = temporaryBookingLog
           .get(req.body.date)
           .filter(
@@ -133,11 +131,6 @@ app.delete("/remove-booking/:id", (req, res) => {
 
 //add a booking to the database
 app.post("/add-booking", (req, res) => {
-  console.log(temporaryBookingLog);
-  // console.log("Expiry ---> ", new Date(req.body.expireAtUTCFormat));
-  // console.log("Today ---> ", new Date());
-  // console.log(new Date(req.body.expireAtUTCFormat) - new Date());
-
   if (temporaryBookingLog.has(req.body.date)) {
     let foundOverlapping = false;
     for (booking of temporaryBookingLog.get(req.body.date)) {
@@ -159,8 +152,6 @@ app.post("/add-booking", (req, res) => {
       res.status(500).json({
         error_message: "Sorry, the slot is already booked!",
       });
-
-      console.log("Sorry! The slot is already booked!");
     } else {
       temporaryBookingLog.get(req.body.date).push({
         arrivalTime: new Date(req.body.arrival).getTime(),
@@ -183,7 +174,6 @@ app.post("/add-booking", (req, res) => {
         if (temporaryBookingLog.get(req.body.date).length === 0) {
           temporaryBookingLog.delete(req.body.date);
         }
-        // console.log(temporaryBookingLog);
       }, new Date(req.body.expireAt) - new Date());
 
       //do the booking....
@@ -191,7 +181,6 @@ app.post("/add-booking", (req, res) => {
       //remove this current object from the temporaryBookingLog
       //inside the .then() to save space. If .catch() was triggered
       //then, also delete the temporary bookig
-      console.log("Doing the booking 1");
       req.body.expireAt = new Date(req.body.expireAt);
       db.collection("parking")
         .insertOne(req.body)
@@ -227,14 +216,12 @@ app.post("/add-booking", (req, res) => {
       if (temporaryBookingLog.get(req.body.date).length === 0) {
         temporaryBookingLog.delete(req.body.date);
       }
-      // console.log(temporaryBookingLog);
     }, new Date(req.body.expireAt) - new Date());
 
     //do the booking....
     //after booking is done, make sure to
     //remove this current object from the temporaryBookingLog
     //inside the .then() to save space.
-    console.log("Doing the booking 2");
     req.body.expireAt = new Date(req.body.expireAt);
     db.collection("parking")
       .insertOne(req.body)

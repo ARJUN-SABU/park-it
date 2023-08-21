@@ -49,10 +49,7 @@ function ParkingBooking({ setSlotBookings }) {
         ).toUTCString(),
       };
 
-      console.log(data);
-
       let url2 = "https://park-it-omega.vercel.app/add-booking/";
-      // let url2 = "http://localhost:8000/add-booking/";
       fetch(url2, {
         method: "POST",
         body: JSON.stringify(data),
@@ -62,7 +59,6 @@ function ParkingBooking({ setSlotBookings }) {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("I am hahaha -> ", data);
           if (data.error_message) {
             alert(data.error_message);
           } else {
