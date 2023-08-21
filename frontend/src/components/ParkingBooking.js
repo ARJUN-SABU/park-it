@@ -44,6 +44,9 @@ function ParkingBooking({ setSlotBookings }) {
         email: userStatus,
         xCoordinate: parkingState.xCoordinate,
         yCoordinate: parkingState.yCoordinate,
+        expireAtUTCFormat: new Date(
+          `${parkingState.date} ${parkingState.departure}`
+        ).toUTCString(),
       };
 
       console.log(data);

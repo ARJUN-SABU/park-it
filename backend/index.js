@@ -114,9 +114,9 @@ let temporaryBookingLog = new Map();
 
 //add a booking to the database
 app.post("/add-booking", (req, res) => {
-  console.log("Expiry ---> ", new Date(req.body.expireAt));
+  console.log("Expiry ---> ", new Date(req.body.expireAtUTCFormat));
   console.log("Today ---> ", new Date());
-  console.log(new Date(req.body.expireAt) - new Date());
+  console.log(new Date(req.body.expireAtUTCFormat) - new Date());
 
   if (temporaryBookingLog.has(req.body.date)) {
     let foundOverlapping = false;
