@@ -110,11 +110,112 @@ app.delete("/remove-booking/:id", (req, res) => {
   }
 });
 
+let temporaryBookingLog = new Map();
+// let temporaryBookingTimeouts = [];
 //add a booking to the database
 app.post("/add-booking", (req, res) => {
-  req.body.expireAt = new Date(req.body.expireAt);
-  db.collection("parking")
-    .insertOne(req.body)
-    .then((result) => res.status(200).json(result))
-    .catch((err) => res.status(500).json(err));
+  console.log(new Date(req.body.expireAt) - new Date());
+
+  if (temporaryBookingLog.has(req.body.date)) {
+    let foundOverlapping = false;
+    for (booking of temporaryBookingLog.get(req.body.date)) {
+      if (
+        booking.arrivalTime < new Date(req.body.departure).getTime() &&
+        new Date(req.body.arrival).getTime() < booking.departureTime
+      ) {
+        foundOverlapping = true;
+        break;
+      }
+    }
+
+    if (foundOverlapping) {
+      res.status(500).json({
+        error_message: "Sorry! The slot is already booked!",
+      });
+
+      console.log("Sorry! The slot is already booked!");
+    } else {
+      temporaryBookingLog.get(req.body.date).push({
+        arrivalTime: new Date(req.body.arrival).getTime(),
+        departureTime: new Date(req.body.departure).getTime(),
+      });
+      let timeout = setTimeout(() => {
+        let newTemporaryBookings = temporaryBookingLog
+          .get(req.body.date)
+          .filter(
+            (booking) =>
+              booking.arrivalTime !== new Date(req.body.arrival).getTime() &&
+              booking.departureTime !== new Date(req.body.departure).getTime()
+          );
+
+        temporaryBookingLog.set(req.body.date, newTemporaryBookings);
+        if (temporaryBookingLog.get(req.body.date).length === 0) {
+          temporaryBookingLog.delete(req.body.date);
+        }
+        console.log(temporaryBookingLog);
+      }, new Date(req.body.expireAt) - new Date());
+      // temporaryBookingTimeouts.push(timeout);
+
+      //do the booking....
+      //after booking is done, make sure to
+      //remove this current object from the temporaryBookingLog
+      //inside the .then() to save space. If .catch() was triggered
+      //then, also delete the temporary bookig
+      console.log("Doing the booking 1");
+      req.body.expireAt = new Date(req.body.expireAt);
+      db.collection("parking")
+        .insertOne(req.body)
+        .then((result) => {
+          res.status(200).json(result);
+        })
+        .catch((err) => {
+          res.status(500).json(err);
+        });
+    }
+  } else {
+    temporaryBookingLog.set(req.body.date, [
+      {
+        arrivalTime: new Date(req.body.arrival).getTime(),
+        departureTime: new Date(req.body.departure).getTime(),
+      },
+    ]);
+
+    let timeout = setTimeout(() => {
+      let newTemporaryBookings = temporaryBookingLog
+        .get(req.body.date)
+        .filter(
+          (booking) =>
+            booking.arrivalTime !== new Date(req.body.arrival).getTime() &&
+            booking.departureTime !== new Date(req.body.departure).getTime()
+        );
+
+      temporaryBookingLog.set(req.body.date, newTemporaryBookings);
+      if (temporaryBookingLog.get(req.body.date).length === 0) {
+        temporaryBookingLog.delete(req.body.date);
+      }
+
+      console.log(temporaryBookingLog);
+    }, new Date(req.body.expireAt) - new Date());
+
+    //do the booking....
+    //after booking is done, make sure to
+    //remove this current object from the temporaryBookingLog
+    //inside the .then() to save space.
+    console.log("Doing the booking 2");
+    req.body.expireAt = new Date(req.body.expireAt);
+    db.collection("parking")
+      .insertOne(req.body)
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+
+  // req.body.expireAt = new Date(req.body.expireAt);
+  // db.collection("parking")
+  //   .insertOne(req.body)
+  //   .then((result) => res.status(200).json(result))
+  //   .catch((err) => res.status(500).json(err));
 });
