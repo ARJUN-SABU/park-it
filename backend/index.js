@@ -95,7 +95,7 @@ app.get("/user-bookings", (req, res) => {
 });
 
 // key -> booking_date
-// value -> array of bookings made on that day
+// value -> [array of bookings made on that day]
 // each booking in the array contains arrival, departure times
 // and the booking slot.
 // This is used to handle concurrent bookings
