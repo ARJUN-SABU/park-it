@@ -8,6 +8,13 @@ function UserBookingCard(props) {
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        block: props.block,
+        slot: props.slot,
+        arrival: props.arrival,
+        departure: props.departure,
+        date: props.date,
+      }),
     })
       .then((res) => {
         fetch(

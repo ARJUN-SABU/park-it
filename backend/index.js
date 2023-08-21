@@ -94,6 +94,123 @@ app.get("/user-bookings", (req, res) => {
     });
 });
 
+// key -> booking_date
+// value -> array of bookings made on that day
+// each booking in the array contains arrival, departure times
+// and the booking slot.
+// This is used to handle concurrent bookings
+// when multiple people try to book overlapping time ranges
+// of the same parking slot at the same time.
+// This map is used in the /add-booking
+// and /remove-booking APIs.
+let temporaryBookingLog = new Map();
+
+//add a booking to the database
+app.post("/add-booking", (req, res) => {
+  if (temporaryBookingLog.has(req.body.date)) {
+    let foundOverlapping = false;
+    for (booking of temporaryBookingLog.get(req.body.date)) {
+      if (
+        `${booking.block}${booking.slot}` ===
+        `${req.body.block}${req.body.slot}`
+      ) {
+        if (
+          booking.arrivalTime < new Date(req.body.departure).getTime() &&
+          new Date(req.body.arrival).getTime() < booking.departureTime
+        ) {
+          foundOverlapping = true;
+          break;
+        }
+      }
+    }
+
+    if (foundOverlapping) {
+      res.status(500).json({
+        error_message: "Sorry, the slot is already booked!",
+      });
+    } else {
+      temporaryBookingLog.get(req.body.date).push({
+        arrivalTime: new Date(req.body.arrival).getTime(),
+        departureTime: new Date(req.body.departure).getTime(),
+        block: req.body.block,
+        slot: req.body.slot,
+      });
+
+      // Also set a setTimeout to delete this booking instance
+      // from the server automatically when the expiry date
+      // and time comes so that the server doesn't exhaust its
+      // space for expired bookings.
+      // The time interval after which the setTimeout should
+      // run is expiryTimeOfTheBooking - currentTime.
+      // So, after this much time interval, the current booking
+      // should be automatically deleted from the server.
+      let timeout = setTimeout(() => {
+        let newTemporaryBookings = temporaryBookingLog
+          .get(req.body.date)
+          .filter(
+            (booking) =>
+              `${booking.block}${booking.slot}` !==
+                `${req.body.block}${req.body.slot}` ||
+              booking.arrivalTime !== new Date(req.body.arrival).getTime() ||
+              booking.departureTime !== new Date(req.body.departure).getTime()
+          );
+
+        temporaryBookingLog.set(req.body.date, newTemporaryBookings);
+        if (temporaryBookingLog.get(req.body.date).length === 0) {
+          temporaryBookingLog.delete(req.body.date);
+        }
+      }, new Date(req.body.expireAt) - new Date());
+
+      //register the booking in the database.
+      req.body.expireAt = new Date(req.body.expireAt);
+      db.collection("parking")
+        .insertOne(req.body)
+        .then((result) => {
+          res.status(200).json(result);
+        })
+        .catch((err) => {
+          res.status(500).json(err);
+        });
+    }
+  } else {
+    temporaryBookingLog.set(req.body.date, [
+      {
+        arrivalTime: new Date(req.body.arrival).getTime(),
+        departureTime: new Date(req.body.departure).getTime(),
+        block: req.body.block,
+        slot: req.body.slot,
+      },
+    ]);
+
+    let timeout = setTimeout(() => {
+      let newTemporaryBookings = temporaryBookingLog
+        .get(req.body.date)
+        .filter(
+          (booking) =>
+            `${booking.block}${booking.slot}` !==
+              `${req.body.block}${req.body.slot}` ||
+            booking.arrivalTime !== new Date(req.body.arrival).getTime() ||
+            booking.departureTime !== new Date(req.body.departure).getTime()
+        );
+
+      temporaryBookingLog.set(req.body.date, newTemporaryBookings);
+      if (temporaryBookingLog.get(req.body.date).length === 0) {
+        temporaryBookingLog.delete(req.body.date);
+      }
+    }, new Date(req.body.expireAt) - new Date());
+
+    req.body.expireAt = new Date(req.body.expireAt);
+    db.collection("parking")
+      .insertOne(req.body)
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
+
 //delete a particular booking
 app.delete("/remove-booking/:id", (req, res) => {
   if (ObjectId.isValid(req.params.id)) {
@@ -101,20 +218,28 @@ app.delete("/remove-booking/:id", (req, res) => {
       .deleteOne({
         _id: new ObjectId(req.params.id),
       })
-      .then((result) => res.status(200).json(result))
+      .then((result) => {
+        let newTemporaryBookings = temporaryBookingLog
+          .get(req.body.date)
+          .filter(
+            (booking) =>
+              `${booking.block}${booking.slot}` !==
+                `${req.body.block}${req.body.slot}` ||
+              booking.arrivalTime !== new Date(req.body.arrival).getTime() ||
+              booking.departureTime !== new Date(req.body.departure).getTime()
+          );
+
+        temporaryBookingLog.set(req.body.date, newTemporaryBookings);
+        if (temporaryBookingLog.get(req.body.date).length === 0) {
+          temporaryBookingLog.delete(req.body.date);
+        }
+
+        res.status(200).json(result);
+      })
       .catch((err) => res.status(500).json(err));
   } else {
     res.status(400).json({
       error_message: "Invalid Id",
     });
   }
-});
-
-//add a booking to the database
-app.post("/add-booking", (req, res) => {
-  req.body.expireAt = new Date(req.body.expireAt);
-  db.collection("parking")
-    .insertOne(req.body)
-    .then((result) => res.status(200).json(result))
-    .catch((err) => res.status(500).json(err));
 });
