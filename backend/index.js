@@ -111,7 +111,7 @@ app.delete("/remove-booking/:id", (req, res) => {
 });
 
 let temporaryBookingLog = new Map();
-// let temporaryBookingTimeouts = [];
+
 //add a booking to the database
 app.post("/add-booking", (req, res) => {
   console.log(new Date(req.body.expireAt) - new Date());
