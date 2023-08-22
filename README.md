@@ -1,6 +1,6 @@
 # Park-it
 
-A fully responsive web app where users can **sign up**, **search**, and **reserve parking slots** based on their preferred date and duration. The app also provides a feature to **view the status of booked slots** and **allows cancellations**. Booked slots are **automatically removed** from the database once the specified date and duration have passed.
+A fully responsive web app where users can **sign up**, **search**, and **reserve parking slots** based on their preferred date and time duration. The app also provides a feature to **view the status of booked slots** and **allows cancellations**. Booked slots are **automatically removed** from the database once the specified date and duration have passed.
 
 **Concurrent bookings** of the same free slot by multiple users for the same preferred date and overlapping time duration is also handled and only one user gets the slot.
 
